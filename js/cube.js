@@ -38,18 +38,24 @@ function CubeProblem(initialState){
 	};
 	
 	var facesMatrix = {
-		0:{
-			'left':[1,'top'],
-			'top':[4,'top'],
-			'right':[3,'top'],
-			'bottom':[2,'top']
-		},
-		1:{
-			'left':[4,'right'],
-			'top':[0,'left'],
-			'right':[2,'left'],
-			'bottom':[5,'left']
-		}	
+        0:[ // Face 0
+            [[0,0,0],[0,1,0]],
+            [[0,0,1],[0,1,1]],
+            [[0,1,1],[0,0,1]],
+            [[0,1,0],[0,0,0]],
+            // Face 1
+            [[1,0,1],[4,0,1]],
+            [[1,1,1],[4,1,1]],
+            // Face 2
+            [[2,0,1],[1,0,1]],
+            [[2,1,1],[1,1,1]],
+            // Face 3
+            [[3,0,1],[2,0,1]],
+            [[3,1,1],[2,1,1]],
+            // Face 4
+            [[4,0,1],[3,0,1]],
+            [[4,1,1],[3,1,1]],
+        ]
 	};
 	
 	this.getSuccessorState = function(action){
