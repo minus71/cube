@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Cube</title>
+<script type="text/javascript" src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
+<script type="text/javascript" src="js/cube.js"></script>
+<link rel="stylesheet" type="text/css" media="screen" href="css/south-street/jquery-ui-1.10.2.custom.min.css" />
+<style type="text/css">
+.cellRect{
+	color:#000000;
+	fill-opacity:1;
+	fill-rule:nonzero;
+	stroke:none;
+	stroke-width:0.30000000999999998;
+	marker:none;
+	visibility:visible;
+	display:inline;
+	overflow:visible;
+	enable-background:accumulate
+}
+.red_face{
+	fill:#c83737;
+}
+.blue_face{
+	fill:#5599ff
+}
+.white_face{
+	fill:#dbe2e3;
+	stroke:#4d4d4d
+}
+.green_face{
+	fill:#71c847
+}
+.yellow_face{
+	fill:#ffd42a
+}
+.orange_face{
+	fill:#ff7f2a
+}
+
+
+</style>
+</head>
+<body>
+<div id="ok_btn">OK</div>
+
+<svg id="fooz" width="600" height="400">
+</svg>
+<script type="text/javascript">
+	var initialState;
+	$(document).ready(function(){
+		$('#ok_btn').button();
+		initialState = new CubeState();
+		layout = new CubeLayout('#fooz');
+		layout.show(initialState);
+	});
+</script>
+</body>
+</html>
