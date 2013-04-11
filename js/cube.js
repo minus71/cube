@@ -146,22 +146,33 @@ function CubeLayout(cont){
 
     var init=function(){
         var svg = d3.select(container);
-        facesArray = [0,1,2,3,4,5];
-    	var x=function(dataArray){return cellXY(dataArray).x;};
-		var y=function(dataArray){return cellXY(dataArray).y;};
+        var facesArray = [[0],[1],[2],[3],[4],[5]];
+        var x=function(dataArray){
+            var faceNum = dataArray[0];
+        	var faceX = faceMatrix[faceNum][0];
+            var _x = faceX*((cellWidth+cellPadding)*2+cellPadding*3);
+            return _x;
+        };
+        var y=function(dataArray){
+            var faceNum = dataArray[0];
+    		var faceY = faceMatrix[faceNum][1];    	
+		    var _y = faceY*((cellWidth+cellPadding)*2+cellPadding*3);
+            return _y;
+        };
 
-        svg
+        svg.data(facesArray)
+            .selectAll('.faceRect')
             .data(facesArray)
+            .attr('class','face_'+function(d){return d[0]}+" faceRect")
             .enter()
                 .append('rect')
-    			.attr('class',function(d){return d[3]+"_face cellRect";})
-    			.attr("width",cellWidth*2+cellPadding*2)
-    			.attr("height",cellWidth*2+cellPadding*2)
-    			.attr("rx","4")
-    			.attr("ry","4")
-    			.attr("x",x)
-    			.attr("y",y);
-
+                .attr('class','face_'+function(d){return d[0]}+" faceRect")
+                .attr("width",cellWidth*2+cellPadding*3)
+                .attr("height",cellWidth*2+cellPadding*3)
+                .attr("rx","6")
+                .attr("ry","6")
+                .attr("x",x)
+                .attr("y",y);
         svg.append
     }
     
@@ -173,8 +184,8 @@ function CubeLayout(cont){
 		// var color = dataArray[3];
 		var faceX = faceMatrix[faceNum][0];
 		var faceY = faceMatrix[faceNum][1];
-		var _x = faceX*((cellWidth+cellPadding)*2)+col*(cellWidth+cellPadding);
-		var _y = faceY*((cellWidth+cellPadding)*2)+row*(cellWidth+cellPadding);
+		var _x = faceX*((cellWidth+cellPadding)*2+cellPadding*3)+col*(cellWidth+cellPadding)+cellPadding;
+		var _y = faceY*((cellWidth+cellPadding)*2+cellPadding*3)+row*(cellWidth+cellPadding)+cellPadding;
 		var result ={
 			x : _x, y: _y 
 		};
