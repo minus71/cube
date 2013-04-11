@@ -64,7 +64,9 @@ function CubeProblem(initialState){
 	
 }
 
-function CubeState(){
+function CubeState(state_matrix){
+    
+    
 	var faces = [
 		[['red','red'],['red','red']],
 		[['blue','blue'],['blue','blue']],
@@ -73,7 +75,18 @@ function CubeState(){
 		[['green','green'],['green','green']],
 		[['yellow','yellow'],['yellow','yellow']]
 	];
-	
+
+    if(state_matrix){
+        for(var f = 0;f<6;f++){
+			for(var x=0;x<2;x++){
+				for(var y=0;y<2;y++){
+                    faces[f][x][y]=state_matrix[f][x][y];
+				}
+			}
+        }
+    }
+
+
 	this.faceToString = function(faceNumber){
 		var selected_face = faces[faceNumber];
 		var result = "";
@@ -102,6 +115,10 @@ function CubeState(){
 		return faces;
 	};
 	
+    this.clone = function(){
+        var newState = new CubeState(faces);
+        return newState;
+    }
 }
 
 function CubeLayout(cont){
