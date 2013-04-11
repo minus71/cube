@@ -50,12 +50,19 @@
 <svg id="fooz" width="600" height="400">
 </svg>
 <script type="text/javascript">
-	var initialState;
+	var problem;
 	$(document).ready(function(){
-		$('#ok_btn').button();
-		initialState = new CubeState();
-		layout = new CubeLayout('#fooz');
-		layout.show(initialState);
+		var btn = $('#ok_btn').button();
+		var layout = new CubeLayout('#fooz');
+        problem = new CubeProblem();
+		layout.show(problem.getState());
+        btn.click(function(){
+            var state = problem.getState();
+            var action = problem.getActions()[0];
+            var newState = problem.getSuccessorState(state,action);
+            problem = new CubeProblem(newState);
+            layout.show(newState);
+        });
 	});
 </script>
 </body>

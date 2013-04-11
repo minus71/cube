@@ -2,8 +2,7 @@ function Cube(containerId){
 	var _containerId = containerId;
 
 	function init(){
-		cont = $(_containerId);
-		
+		var cont = $(_containerId);
 	}
 	init();
 	
@@ -38,6 +37,7 @@ function CubeProblem(initialState){
 	};
 	
 	var facesMatrix = {
+        //     From     To
         0:[ // Face 0
             [[0,0,0],[0,1,0]],
             [[0,0,1],[0,1,1]],
@@ -58,8 +58,18 @@ function CubeProblem(initialState){
         ]
 	};
 	
-	this.getSuccessorState = function(action){
-		
+	this.getSuccessorState = function(state, action){
+		var currentMatrix = state.getMatrix();
+        var newState = state.clone();
+        var newMatrix = newState.getMatrix();
+        var transformMatrix = facesMatrix[action[0]];
+        for(var i in transformMatrix){
+            var xformCell = transformMatrix[i];
+            var fromCell = xformCell[0];
+            var toCell = xformCell[1];
+            newMatrix[toCell[0]][toCell[1]][toCell[2]] =  currentMatrix[fromCell[0]][fromCell[1]][fromCell[2]];
+        }
+        return newState;
 	};
 	
 }
@@ -124,28 +134,28 @@ function CubeState(state_matrix){
 function CubeLayout(cont){
 	var container = cont;
 	var faceMatrix = [
-	          	    [1,0],
-	          	    [0,1],
-	          	    [1,1],
-	          	    [2,1],
-	          	    [3,1],
-	          	    [1,2]
-	          	];
-	          	
-  	var cellWidth = 20;
-  	var cellPadding = 2;
+        [1,0],
+        [0,1],
+        [1,1],
+        [2,1],
+        [3,1],
+        [1,2]
+    ];
+
+    var cellWidth = 20;
+    var cellPadding = 2;
 	
 	this.show=function(state){
 		
 		var cellXY = function(dataArray){
-			faceNum = dataArray[0];
-			col = dataArray[1];
-			row = dataArray[2];
-			color = dataArray[3];
+			var faceNum = dataArray[0];
+			var col = dataArray[1];
+			var row = dataArray[2];
+			var color = dataArray[3];
 			var faceX = faceMatrix[faceNum][0];
 			var faceY = faceMatrix[faceNum][1];
-			_x = faceX*((cellWidth+cellPadding)*2)+col*(cellWidth+cellPadding);
-			_y = faceY*((cellWidth+cellPadding)*2)+row*(cellWidth+cellPadding);
+			var _x = faceX*((cellWidth+cellPadding)*2)+col*(cellWidth+cellPadding);
+			var _y = faceY*((cellWidth+cellPadding)*2)+row*(cellWidth+cellPadding);
 			var result ={
 				x : _x, y: _y 
 			};
