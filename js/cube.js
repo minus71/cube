@@ -26,35 +26,53 @@ function CubeProblem(initialState){
 	};
 	
 	this.getActions = function(){
-		var actions = [];
-		for(var i=0;i<6;i++){
-			for(var r=1;r<=3;r++){
-				var action = [i,r];
-				actions.push(action);
-			}
-		}
+		var actions = [[0],[1],[2]];
+		// for(var i=0;i<6;i++){
+		// 	for(var r=1;r<=3;r++){
+		// 		var action = [i,r];
+		// 		actions.push(action);
+		// 	}
+		// }
 		return actions;
 	};
 	
 	var facesMatrix = {
         //     From     To
         0:[ // Face 0
+            [[0,0,1],[0,0,0]],
             [[0,0,0],[0,1,0]],
-            [[0,0,1],[0,1,1]],
+            [[0,1,0],[0,1,1]],
             [[0,1,1],[0,0,1]],
-            [[0,1,0],[0,0,0]],
             // Face 1
-            [[1,0,1],[4,0,1]],
-            [[1,1,1],[4,1,1]],
+            [[1,0,0],[4,0,0]],
+            [[1,1,0],[4,1,0]],
             // Face 2
-            [[2,0,1],[1,0,1]],
-            [[2,1,1],[1,1,1]],
+            [[2,0,0],[1,0,0]],
+            [[2,1,0],[1,1,0]],
             // Face 3
-            [[3,0,1],[2,0,1]],
-            [[3,1,1],[2,1,1]],
+            [[3,0,0],[2,0,0]],
+            [[3,1,0],[2,1,0]],
             // Face 4
-            [[4,0,1],[3,0,1]],
-            [[4,1,1],[3,1,1]],
+            [[4,0,0],[3,0,0]],
+            [[4,1,0],[3,1,0]]
+        ],
+        1:[ // Face 1
+            [[1,0,1],[1,0,0]],
+            [[1,0,0],[1,1,0]],
+            [[1,1,0],[1,1,1]],
+            [[1,1,1],[1,0,1]],
+            // Face 0
+            [[0,0,1],[2,0,1]],
+            [[0,0,0],[2,0,0]],
+            // Face 2
+            [[2,0,0],[5,0,0]],
+            [[2,0,1],[5,0,1]],
+            // Face 5
+            [[5,0,0],[4,1,0]],
+            [[5,0,1],[4,1,1]],
+            // Face 4
+            [[4,1,0],[0,0,1]],
+            [[4,1,1],[0,0,0]]
         ]
 	};
 	
@@ -163,17 +181,17 @@ function CubeLayout(cont){
         svg.data(facesArray)
             .selectAll('.faceRect')
             .data(facesArray)
-            .attr('class','face_'+function(d){return d[0]}+" faceRect")
+            .attr('class',function(d){return 'face_'+d[0]+' faceRect'})
             .enter()
                 .append('rect')
-                .attr('class','face_'+function(d){return d[0]}+" faceRect")
+                .attr('class',function(d){return 'face_'+d[0]+' faceRect'})
                 .attr("width",cellWidth*2+cellPadding*3)
                 .attr("height",cellWidth*2+cellPadding*3)
                 .attr("rx","6")
                 .attr("ry","6")
                 .attr("x",x)
                 .attr("y",y);
-        svg.append
+        
     }
     
 
@@ -203,9 +221,11 @@ function CubeLayout(cont){
 		cube
 			.selectAll('.cellRect')
 			.data(state.toArray())
+            .datum(function(d){return d;})
 			.attr('class',function(d){return d[3]+"_face cellRect";})
 			.enter()
 				.append('rect')
+                .datum(function(d){return d;})
 				.attr('class',function(d){return d[3]+"_face cellRect";})
 				.attr("width","20")
 				.attr("height","20")
@@ -217,3 +237,5 @@ function CubeLayout(cont){
     
     init();
 }
+
+

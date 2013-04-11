@@ -47,23 +47,40 @@
 </style>
 </head>
 <body>
-<div id="ok_btn">OK</div>
-
 <svg id="fooz" width="600" height="400">
 </svg>
+<div id="ok_btn">Reset</div>
 <script type="text/javascript">
-	var problem;
+    var layout;
+    var problem;
+
+    function bindClick(){
+    d3.selectAll('.cellRect').on('click',function(d){
+        var nodeData = d3.select(this).datum();
+        
+        var state = problem.getState();
+        console.info(nodeData);
+        var actions =  problem.getActions();
+        var faceNum = nodeData[0];
+        var action = actions [faceNum];
+        var newState = problem.getSuccessorState(state,action);
+        problem = new CubeProblem(newState);
+        layout.show(newState);
+        bindClick();
+    });
+}
+
+
 	$(document).ready(function(){
 		var btn = $('#ok_btn').button();
-		var layout = new CubeLayout('#fooz');
+		layout = new CubeLayout('#fooz');
         problem = new CubeProblem();
 		layout.show(problem.getState());
+        bindClick();
         btn.click(function(){
-            var state = problem.getState();
-            var action = problem.getActions()[0];
-            var newState = problem.getSuccessorState(state,action);
-            problem = new CubeProblem(newState);
-            layout.show(newState);
+            problem = new CubeProblem();
+            layout.show(problem.getState());
+            bindClick();
         });
 	});
 </script>
