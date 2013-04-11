@@ -6,6 +6,7 @@
 <script type="text/javascript" src="js/d3.v3.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.10.2.custom.min.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
 <script type="text/javascript" src="js/cube.js"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="css/south-street/jquery-ui-1.10.2.custom.min.css" />
 <style type="text/css">
@@ -49,7 +50,13 @@
 <body>
 <svg id="fooz" width="600" height="400">
 </svg>
-<div id="ok_btn">Reset</div>
+<pre class="result">
+    
+</pre>
+<div class="operations" >
+<span id="ok_btn">Reset</span>
+<span id="solve_btn">Solve</span>
+</div>
 <script type="text/javascript">
     var layout;
     var problem;
@@ -82,7 +89,24 @@
             layout.show(problem.getState());
             bindClick();
         });
-	});
+        var solve = $('#solve_btn').button();
+        solve.click(function(){
+            var search = new Search();
+            var strategy={
+                'fringe':new Queue()
+            }
+            var result = search.search(problem,strategy);
+            var strOut = "<";
+            for(r in result){
+                strOut+=result[r];
+                strOut+=',';
+            }
+            strOut=strOut.substr(0,strOut.length-1);
+            strOut+='>\n'+problem.getExpandedNodes();
+            
+            $('.result').text(strOut);
+        });
+    });
 </script>
 </body>
 </html>

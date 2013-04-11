@@ -19,7 +19,7 @@ function CubeProblem(initialState){
 	}
 	
 	var currentState = m_initialState;
-	
+	var expandedNodes = 0;
 	
 	this.getState=function (){
 		return currentState;
@@ -95,7 +95,11 @@ function CubeProblem(initialState){
 
 	};
 	
+    /**
+     *  getSuccessorState(state,action)
+     */
 	this.getSuccessorState = function(state, action){
+        expandedNodes++;
 		var currentMatrix = state.getMatrix();
         var newState = state.clone();
         var newMatrix = newState.getMatrix();
@@ -109,6 +113,12 @@ function CubeProblem(initialState){
         return newState;
 	};
 	
+    this.isGoal=function(state){
+        return state.entropy()===0;
+    };
+    this.getExpandedNodes=function(){
+        return expandedNodes;  
+    };
 }
 
 function CubeState(state_matrix){
@@ -141,7 +151,7 @@ function CubeState(state_matrix){
 			for(var y=0;y<2;y++){
 				result+=selected_face[x][y][0].toUpperCase();
 			}
-			result+="\n";
+			result+="|";
 		}
 		return result;
 	};
@@ -165,7 +175,44 @@ function CubeState(state_matrix){
     this.clone = function(){
         var newState = new CubeState(faces);
         return newState;
+    };
+    
+    this.entropy=function(face){
+        if(typeof face !== "undefined"){
+            var aFace = faces[face];
+            var colorSet = [];
+            for(var x in aFace){
+                var row = aFace[x];
+                for(var y in row){
+                    var color = aFace[x][y];
+                    if (colorSet.indexOf(color)<0){
+                        colorSet.push(color)
+                    }
+                }
+            }
+            return colorSet.length-1;
+        }else{
+            var total=0;
+            for(var f=0;f<6;f++){
+                total+=this.entropy(f);
+            }
+            return total;
+        }
+    };
+}
+
+CubeState.prototype.toString = function(){
+    var result = "";
+    for(var f=0;f<6;f++){
+        var selected_face = this.getMatrix()[f];
+    	for(var x=0;x<2;x++){
+    		for(var y=0;y<2;y++){
+    			result+=selected_face[x][y][0].toUpperCase();
+    		}
+    		result+="|";
+    	}
     }
+    return result;
 }
 
 function CubeLayout(cont){
