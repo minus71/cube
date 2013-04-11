@@ -141,26 +141,48 @@ function CubeLayout(cont){
         [3,1],
         [1,2]
     ];
-
     var cellWidth = 20;
     var cellPadding = 2;
+
+    var init=function(){
+        var svg = d3.select(container);
+        facesArray = [0,1,2,3,4,5];
+    	var x=function(dataArray){return cellXY(dataArray).x;};
+		var y=function(dataArray){return cellXY(dataArray).y;};
+
+        svg
+            .data(facesArray)
+            .enter()
+                .append('rect')
+    			.attr('class',function(d){return d[3]+"_face cellRect";})
+    			.attr("width",cellWidth*2+cellPadding*2)
+    			.attr("height",cellWidth*2+cellPadding*2)
+    			.attr("rx","4")
+    			.attr("ry","4")
+    			.attr("x",x)
+    			.attr("y",y);
+
+        svg.append
+    }
+    
+
+    var cellXY = function(dataArray){
+		var faceNum = dataArray[0];
+		var col = dataArray[1]?dataArray[1]:0;
+	    var row = dataArray[2]?dataArray[2]:0;
+		// var color = dataArray[3];
+		var faceX = faceMatrix[faceNum][0];
+		var faceY = faceMatrix[faceNum][1];
+		var _x = faceX*((cellWidth+cellPadding)*2)+col*(cellWidth+cellPadding);
+		var _y = faceY*((cellWidth+cellPadding)*2)+row*(cellWidth+cellPadding);
+		var result ={
+			x : _x, y: _y 
+		};
+		return result;
+	};
 	
 	this.show=function(state){
 		
-		var cellXY = function(dataArray){
-			var faceNum = dataArray[0];
-			var col = dataArray[1];
-			var row = dataArray[2];
-			var color = dataArray[3];
-			var faceX = faceMatrix[faceNum][0];
-			var faceY = faceMatrix[faceNum][1];
-			var _x = faceX*((cellWidth+cellPadding)*2)+col*(cellWidth+cellPadding);
-			var _y = faceY*((cellWidth+cellPadding)*2)+row*(cellWidth+cellPadding);
-			var result ={
-				x : _x, y: _y 
-			};
-			return result;
-		};
 		
 		var x=function(dataArray){return cellXY(dataArray).x;};
 		var y=function(dataArray){return cellXY(dataArray).y;};
@@ -181,5 +203,6 @@ function CubeLayout(cont){
 				.attr("x",x)
 				.attr("y",y);
 	};
-
+    
+    init();
 }
