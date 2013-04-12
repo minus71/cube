@@ -195,11 +195,11 @@ function CubeState(state_matrix){
             }
             return colorSet.length-1;
         }else{
-            var total=0;
+            var value=0;
             for(var f=0;f<6;f++){
-                total+=this.entropy(f);
+                value = Math.max(value,this.entropy(f));
             }
-            return total;
+            return value;
         }
     };
 }
@@ -316,6 +316,31 @@ function UCStrategy(){
         },
         pop: function() {
             var node = data.pop();
+            console.info('Popping node (fringe size:'+data.size() +'):'+planToString(node.plan)+' (value is = '+this.cost(node)+')');
+            return node;
+        },
+        isEmpty: function() {
+            return data.empty();
+        },
+        cost:function(node){
+            return node.plan.length;
+        },
+        toString:function(){
+            return data.toString();
+        }
+
+    }
+}
+
+
+function AStarStrategy(){
+    var data = new PriorityQueue({'low':true});
+    this.fringe = {
+        push: function(node) {
+            data.push(node,this.cost(node)+this.heuristic(node));
+        },
+        pop: function() {
+            var node = data.pop();
             console.info('Popping node:'+node+' (value is = '+this.cost(node)+')');
             return node;
         },
@@ -324,7 +349,14 @@ function UCStrategy(){
         },
         cost:function(node){
             return node.plan.length;
+        },
+        heuristic:function(node){
+          var state = node.state;  
+          var entropy = state.entropy;
+          return entropy;
+        },
+        toString:function(){
+            return data.toString();
         }
-
     }
 }
