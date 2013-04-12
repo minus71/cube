@@ -91,16 +91,10 @@
             bindClick();
         });
         var solve = $('#solve_btn').button();
+        var ecounter = $('.expandCounter');
         solve.click(function(){
             var search = new Search();
-
-            /*
             
-            search.onExpandNode=function(node){
-                var expanded = search.getExpandedNodes();
-                $('.expandCounter').text(expanded);
-            }
-            */
             
             var strategy=new UCStrategy();
             //var strategy=new AStarStrategy();
@@ -113,6 +107,9 @@
             strOut=strOut.substr(0,strOut.length-1);
             strOut+='>\n';
             $('.result').text(strOut);
+            var expanded = search.getExpandedNodes();
+            ecounter.text(expanded);
+
         });
     });
 </script>
