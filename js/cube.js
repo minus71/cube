@@ -67,8 +67,8 @@ function CubeProblem(initialState){
             [[2,0,0],[5,0,0]],
             [[2,0,1],[5,0,1]],
             // Face 5
-            [[5,0,0],[4,1,0]],
-            [[5,0,1],[4,1,1]],
+            [[5,0,0],[4,1,1]],
+            [[5,0,1],[4,1,0]],
             // Face 4
             [[4,1,0],[0,0,1]],
             [[4,1,1],[0,0,0]]
@@ -136,11 +136,34 @@ function CubeState(state_matrix){
 		[['yellow','yellow'],['yellow','yellow']]
 	];
 
+    function initFaces(){
+        var i = 0;
+        var newFaces = []
+        for(var f = 0;f<6;f++){
+            var rowlist = []
+            newFaces.push(rowlist)
+        	for(var x=0;x<2;x++){
+                var collist = [];
+                rowlist.push(collist);
+    			for(var y=0;y<2;y++){
+                    newFaces[f][x][y]={};
+                    newFaces[f][x][y].color = faces[f][x][y];
+                    newFaces[f][x][y].id = i;
+                    i++;
+    			}
+    		}
+        }
+        faces = newFaces;
+    }
+
+    initFaces();
+
     if(state_matrix){
         for(var f = 0;f<6;f++){
 			for(var x=0;x<2;x++){
 				for(var y=0;y<2;y++){
-                    faces[f][x][y]=state_matrix[f][x][y];
+                    faces[f][x][y].color = state_matrix[f][x][y].color;
+                    faces[f][x][y].id = state_matrix[f][x][y].id;
 				}
 			}
         }
@@ -187,7 +210,7 @@ function CubeState(state_matrix){
             for(var x in aFace){
                 var row = aFace[x];
                 for(var y in row){
-                    var color = aFace[x][y];
+                    var color = aFace[x][y].color;
                     if (colorSet.indexOf(color)<0){
                         colorSet.push(color)
                     }
@@ -210,7 +233,7 @@ CubeState.prototype.toString = function(){
         var selected_face = this.getMatrix()[f];
     	for(var x=0;x<2;x++){
     		for(var y=0;y<2;y++){
-    			result+=selected_face[x][y][0].toUpperCase();
+    			result+=selected_face[x][y].color[0].toUpperCase();
     		}
     		result+="|";
     	}
@@ -285,23 +308,37 @@ function CubeLayout(cont){
 		var x=function(dataArray){return cellXY(dataArray).x;};
 		var y=function(dataArray){return cellXY(dataArray).y;};
 		
-		
+		var data = state.toArray();
 		var cube = d3.select(container);
-		cube
+		var enter = cube
 			.selectAll('.cellRect')
-			.data(state.toArray())
+			.data(data)
             .datum(function(d){return d;})
-			.attr('class',function(d){return d[3]+"_face cellRect";})
-			.enter()
+			.attr('class',function(d){return d[3].color+"_face cellRect";})
+			.enter();
+            
+            cube
+    		    .selectAll('.node_id')
+                .data(data)
+                .text(function(d){return d[3].id;});
+            
+            enter
 				.append('rect')
                 .datum(function(d){return d;})
-				.attr('class',function(d){return d[3]+"_face cellRect";})
+				.attr('class',function(d){return d[3].color+"_face cellRect";})
 				.attr("width","20")
 				.attr("height","20")
 				.attr("rx","4")
 				.attr("ry","4")
 				.attr("x",x)
 				.attr("y",y);
+            enter
+                .append('text')
+    			.attr("x",function(d){return x(d)+8;})
+				.attr("y",function(d){return y(d)+15;})
+                .append('tspan')
+                .attr('class','node_id')
+                .text(function(d){return d[3].id;});
 	};
     
     init();
