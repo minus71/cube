@@ -97,13 +97,13 @@
         solve.click(function(){
             var search = new Search();
             
-            
-            var strategy = new UCStrategyRBT();
+            var strategy = new BFStrategy();
+            //var strategy = new UCStrategyRBT();
             //var strategy=new AStarStrategy();
             var result = search.search(problem,strategy);
             var strOut = "<";
             for(var r in result){
-                strOut+=result[r][0]+"("+result[r][1]+")";
+                strOut+=result[r][0];
                 strOut+=',';
             }
             strOut=strOut.substr(0,strOut.length-1);

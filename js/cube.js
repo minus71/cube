@@ -317,11 +317,12 @@ function CubeLayout(cont){
 			.attr('class',function(d){return d[3].color+"_face cellRect";})
 			.enter();
             
-            cube
-    		    .selectAll('.node_id')
-                .data(data)
-                .text(function(d){return d[3].id;});
-            
+            if(false){
+                cube
+        		    .selectAll('.node_id')
+                    .data(data)
+                    .text(function(d){return d[3].id;});
+            }            
             enter
 				.append('rect')
                 .datum(function(d){return d;})
@@ -332,13 +333,15 @@ function CubeLayout(cont){
 				.attr("ry","4")
 				.attr("x",x)
 				.attr("y",y);
-            enter
-                .append('text')
-    			.attr("x",function(d){return x(d)+8;})
-				.attr("y",function(d){return y(d)+15;})
-                .append('tspan')
-                .attr('class','node_id')
-                .text(function(d){return d[3].id;});
+            if(false){
+                enter
+                    .append('text')
+        			.attr("x",function(d){return x(d)+8;})
+    				.attr("y",function(d){return y(d)+15;})
+                    .append('tspan')
+                    .attr('class','node_id')
+                    .text(function(d){return d[3].id;});
+            }
 	};
     
     init();
@@ -389,6 +392,31 @@ function UCStrategyRBT(){
         },
         cost:function(node){
             return node.plan.length;
+        },
+        toString:function(){
+            
+            return data.toString();
+        }
+
+    }
+}
+
+function BFStrategy(){
+    var data = [];
+
+
+    this.fringe = {
+        push: function(node) {
+            data.push(node);
+        },
+        pop: function() {
+            return data.shift();
+        },
+        isEmpty: function() {
+            return data.length===0;
+        },
+        cost:function(node){
+            return 0;
         },
         toString:function(){
             

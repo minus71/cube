@@ -201,6 +201,10 @@ function Search(){
             }else{
                 if(!closedSet.contains(state)){
                     expandedNodes++;
+                    if(expandedNodes>100000){
+                        return [[-1][0]];
+                    }
+                    
                     //console.info(state.entropy()+ "->"+ state.toString())
                     //console.info("Fringe "+strategy.fringe.toString());
                     this.fireExpandNode(node)
