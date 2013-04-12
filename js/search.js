@@ -150,16 +150,6 @@ function Queue(){
         sorted = false;
       }
     };
-    self.toString=function(){
-        var strout="";
-        for(var i in contents){
-            strout+=', '+planToString(contents[i].object.plan);
-        }
-        if(strout.length>0){
-            strout=strout.substr(2);
-        }
-        return strout;
-    }
     self.peek = self.top;
     return self;
     
@@ -209,8 +199,8 @@ function Search(){
             }else{
                 if(!closedSet.contains(state)){
                     expandedNodes++;
-                    console.info(state.entropy()+ "->"+ state.toString())
-                    console.info("Fringe "+strategy.fringe.toString());
+                    //console.info(state.entropy()+ "->"+ state.toString())
+                    //console.info("Fringe "+strategy.fringe.toString());
                     this.fireExpandNode(node)
                     closedSet.add(state);
                     for(var actionIndex in actions){
@@ -219,7 +209,7 @@ function Search(){
                         var newNode = {state:newState,plan:plan.slice(0)};
                         newNode.plan.push(action);
                         strategy.fringe.push(newNode);
-                        console.info(planToString(plan));
+                        //console.info(planToString(plan));
                     }
                 }
             }

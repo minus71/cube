@@ -353,7 +353,7 @@ function UCStrategy(){
         },
         pop: function() {
             var node = data.pop();
-            console.info('Popping node (fringe size:'+data.size() +'):'+planToString(node.plan)+' (value is = '+this.cost(node)+')');
+            // console.info('Popping node (fringe size:'+data.size() +'):'+planToString(node.plan)+' (value is = '+this.cost(node)+')');
             return node;
         },
         isEmpty: function() {
@@ -378,7 +378,7 @@ function AStarStrategy(){
         },
         pop: function() {
             var node = data.pop();
-            console.info('Popping node:'+node+' (value is = '+this.cost(node)+')');
+            // console.info('Popping node:'+node+' (value is = '+this.cost(node)+')');
             return node;
         },
         isEmpty: function() {
