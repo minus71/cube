@@ -27,7 +27,7 @@ function CubeProblem(initialState){
 	this.getActions = function(){
         var actions = [];
         for(var i=0;i<3;i++){
-            for(var r=1;r<=3;r++){
+            for(var r=1;r<=1;r++){
                 var action = [i,r];
                 actions.push(action);
             }
@@ -311,20 +311,19 @@ function CubeLayout(cont){
 function UCStrategy(){
     var data = new PriorityQueue({'low':true});
     this.fringe = {
-        push: function(element) {
-            var cost = 0;
-            var plan = element.plan;
-            for(var p in plan){
-                var c= plan[p][1];
-                cost += (c+1);
-            }
-            data.push(element,cost);
+        push: function(node) {
+            data.push(node,this.cost(node));
         },
         pop: function() {
-            return data.pop();
+            var node = data.pop();
+            console.info('Popping node:'+node+' (value is = '+this.cost(node)+')');
+            return node;
         },
         isEmpty: function() {
             return data.empty();
+        },
+        cost:function(node){
+            return node.plan.length;
         }
 
     }

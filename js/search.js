@@ -200,6 +200,7 @@ function Search(){
             }else{
                 if(!closedSet.contains(state)){
                     expandedNodes++;
+                    console.info(state.entropy()+ "->"+ state.toString())
                     this.fireExpandNode(node)
                     closedSet.add(state);
                     for(var actionIndex in actions){
@@ -208,10 +209,18 @@ function Search(){
                         var newNode = {state:newState,plan:plan.slice(0)};
                         newNode.plan.push(action);
                         strategy.fringe.push(newNode);
-                        console.info(plan.toString())
+                        console.info(planToString(plan));
                     }
                 }
             }
         }
     }
+}
+function planToString(plan){
+    var out="";
+    for(var idx in plan){
+        out+=','+plan[idx][0];
+    }
+    out = out.substr(1);
+    return out;
 }
