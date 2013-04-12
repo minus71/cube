@@ -50,6 +50,7 @@
 <body>
 <svg id="fooz" width="600" height="400">
 </svg>
+<span class="expandCounter"></span>
 <pre class="result">
     
 </pre>
@@ -62,14 +63,14 @@
     var problem;
 
     function bindClick(){
-    d3.selectAll('.cellRect').on('click',function(d){
+        d3.selectAll('.cellRect').on('click',function(d){
         var nodeData = d3.select(this).datum();
         
         var state = problem.getState();
         console.info(nodeData);
         var actions =  problem.getActions();
         var faceNum = nodeData[0];
-        var action = actions [faceNum];
+        var action = actions [faceNum*3];
         var newState = problem.getSuccessorState(state,action);
         problem = new CubeProblem(newState);
         layout.show(newState);
@@ -92,18 +93,20 @@
         var solve = $('#solve_btn').button();
         solve.click(function(){
             var search = new Search();
-            var strategy={
-                'fringe':new Queue()
+            search.onExpandNode=function(node){
+                var expanded = search.getExpandedNodes();
+                $('.expandCounter').text(expanded);
             }
+
+            var strategy=new UCStrategy();
             var result = search.search(problem,strategy);
             var strOut = "<";
-            for(r in result){
-                strOut+=result[r];
+            for(var r in result){
+                strOut+=result[r][0]+"("+result[r][1]+")";
                 strOut+=',';
             }
             strOut=strOut.substr(0,strOut.length-1);
-            strOut+='>\n'+problem.getExpandedNodes();
-            
+            strOut+='>\n';
             $('.result').text(strOut);
         });
     });

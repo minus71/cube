@@ -170,7 +170,19 @@ function Set(){
     
 }
 
+
 function Search(){
+    var expandedNodes = 0;
+    this.getExpandedNodes=function(){
+        return expandedNodes;  
+    };
+
+    this.fireExpandNode=function(node){
+        if(this.onExpandNode){
+            this.onExpandNode(node);
+        }
+    }
+
     this.search= function(problem,strategy){
         var node = {state:problem.getState(),plan:[]};
         var actions = problem.getActions();
@@ -187,13 +199,16 @@ function Search(){
                 return plan;
             }else{
                 if(!closedSet.contains(state)){
+                    expandedNodes++;
+                    this.fireExpandNode(node)
                     closedSet.add(state);
                     for(var actionIndex in actions){
-                        action = actions[actionIndex];
+                        var action = actions[actionIndex];
                         var newState = problem.getSuccessorState(state,action);
                         var newNode = {state:newState,plan:plan.slice(0)};
                         newNode.plan.push(action);
                         strategy.fringe.push(newNode);
+                        console.info(plan.toString())
                     }
                 }
             }

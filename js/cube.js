@@ -19,20 +19,19 @@ function CubeProblem(initialState){
 	}
 	
 	var currentState = m_initialState;
-	var expandedNodes = 0;
 	
 	this.getState=function (){
 		return currentState;
 	};
 	
 	this.getActions = function(){
-		var actions = [[0],[1],[2]];
-		// for(var i=0;i<6;i++){
-		// 	for(var r=1;r<=3;r++){
-		// 		var action = [i,r];
-		// 		actions.push(action);
-		// 	}
-		// }
+        var actions = [];
+        for(var i=0;i<3;i++){
+            for(var r=1;r<=3;r++){
+                var action = [i,r];
+                actions.push(action);
+            }
+        }
 		return actions;
 	};
 	
@@ -95,29 +94,33 @@ function CubeProblem(initialState){
 
 	};
 	
+
+    
     /**
      *  getSuccessorState(state,action)
      */
 	this.getSuccessorState = function(state, action){
-        expandedNodes++;
 		var currentMatrix = state.getMatrix();
         var newState = state.clone();
         var newMatrix = newState.getMatrix();
-        var transformMatrix = facesMatrix[action[0]];
-        for(var i in transformMatrix){
-            var xformCell = transformMatrix[i];
-            var fromCell = xformCell[0];
-            var toCell = xformCell[1];
-            newMatrix[toCell[0]][toCell[1]][toCell[2]] =  currentMatrix[fromCell[0]][fromCell[1]][fromCell[2]];
+        var actionIdx = action[0];
+        var repeat = action[1];
+        
+        var transformMatrix = facesMatrix[actionIdx];
+        for(var r =0;r<repeat;r++){
+            for(var i in transformMatrix){
+                var xformCell = transformMatrix[i];
+                var fromCell = xformCell[0];
+                var toCell = xformCell[1];
+                newMatrix[toCell[0]][toCell[1]][toCell[2]] =  currentMatrix[fromCell[0]][fromCell[1]][fromCell[2]];
+            }
+            currentMatrix = newState.clone().getMatrix();
         }
         return newState;
 	};
 	
     this.isGoal=function(state){
         return state.entropy()===0;
-    };
-    this.getExpandedNodes=function(){
-        return expandedNodes;  
     };
 }
 
@@ -305,3 +308,24 @@ function CubeLayout(cont){
 }
 
 
+function UCStrategy(){
+    var data = new PriorityQueue({'low':true});
+    this.fringe = {
+        push: function(element) {
+            var cost = 0;
+            var plan = element.plan;
+            for(var p in plan){
+                var c= plan[p][1];
+                cost += (c+1);
+            }
+            data.push(element,cost);
+        },
+        pop: function() {
+            return data.pop();
+        },
+        isEmpty: function() {
+            return data.empty();
+        }
+
+    }
+}
