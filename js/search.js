@@ -191,9 +191,11 @@ function Search(){
             if(strategy.fringe.isEmpty()){
                 return undefined;
             }
+            
             var node = strategy.fringe.pop();
             var state = node.state;
             var plan = node.plan;
+            // console.info(planToString(plan));
             if(problem.isGoal(state)){
                 return plan;
             }else{

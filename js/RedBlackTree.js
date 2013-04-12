@@ -311,6 +311,18 @@ RedBlackTree.prototype.traverse = function(func) {
     }
 };
 
+/*****
+*
+*   isEmpty
+*
+*****/
+RedBlackTree.prototype.isEmpty = function() {
+    if ( this._root != null ) {
+        return false;
+    }
+    return true;
+};
+
 
 /*****
 *

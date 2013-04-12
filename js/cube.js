@@ -347,6 +347,8 @@ function CubeLayout(cont){
 
 function UCStrategy(){
     var data = new PriorityQueue({'low':true});
+
+
     this.fringe = {
         push: function(node) {
             data.push(node,this.cost(node));
@@ -363,6 +365,33 @@ function UCStrategy(){
             return node.plan.length;
         },
         toString:function(){
+            return data.toString();
+        }
+
+    }
+}
+
+function UCStrategyRBT(){
+    var data = new RedBlackTree();
+
+
+    this.fringe = {
+        push: function(node) {
+            data.add(new SearchNode(node.state,node.plan));
+        },
+        pop: function() {
+            var node = data.min();
+            data.remove(node);
+            return node;
+        },
+        isEmpty: function() {
+            return data.isEmpty();
+        },
+        cost:function(node){
+            return node.plan.length;
+        },
+        toString:function(){
+            
             return data.toString();
         }
 
@@ -395,5 +424,32 @@ function AStarStrategy(){
         toString:function(){
             return data.toString();
         }
+    }
+}
+
+function SearchNode(aState,aPlan){
+    this.state=aState;
+    this.plan=aPlan;
+    
+    this.cost = this.plan.length;
+    
+    this.compare = function(other){
+        if(this.cost==other.cost){
+            for(var i in this.plan){
+                if(this.plan[i][0]>other.plan[i][0]){
+                    return 1;
+                }else if(this.plan[i][0]<other.plan[i][0]){
+                    return -1;
+                }
+            }
+            return 0;
+        }else if(this.cost>other.cost){
+            return 1;
+        }else{
+            return -1;
+        }
+    }
+    this.toString=function(){
+        return planToString(this.plan);
     }
 }
