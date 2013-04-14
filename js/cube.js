@@ -524,7 +524,7 @@ function Plan(actions){
     this.toString=function(){
         var aggregated = this.aggregated();
         var strOut = "";
-        for(i in aggregated){
+        for(var i in aggregated){
             strOut +=', '
             var action = aggregated[i];
             strOut += action.action;
