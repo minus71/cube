@@ -201,7 +201,7 @@ function Search(){
             }else{
                 if(!closedSet.contains(state)){
                     expandedNodes++;
-                    if(expandedNodes>70000){
+                    if(expandedNodes>50000){
                         return [[-1][0]];
                     }
                     
