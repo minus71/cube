@@ -103,7 +103,7 @@
             var result = search.search(problem,strategy);
             var strOut = "<";
             for(var r in result){
-                strOut+=result[r][0];
+                strOut+=result[r];
                 strOut+=',';
             }
             strOut=strOut.substr(0,strOut.length-1);

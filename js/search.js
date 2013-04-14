@@ -204,18 +204,14 @@ function Search(){
                     if(expandedNodes>50000){
                         return [[-1][0]];
                     }
-                    
-                    //console.info(state.entropy()+ "->"+ state.toString())
-                    //console.info("Fringe "+strategy.fringe.toString());
                     this.fireExpandNode(node)
                     closedSet.add(state);
-                    for(var actionIndex in actions){
-                        var action = actions[actionIndex];
+                    for(var idx in actions){
+                        var action = actions[idx];
                         var newState = problem.getSuccessorState(state,action);
                         var newNode = {state:newState,plan:plan.slice(0)};
                         newNode.plan.push(action);
                         strategy.fringe.push(newNode);
-                        //console.info(planToString(plan));
                     }
                 }
             }

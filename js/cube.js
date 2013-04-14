@@ -28,8 +28,7 @@ function CubeProblem(initialState){
         var actions = [];
         for(var i=0;i<3;i++){
             for(var r=1;r<=1;r++){
-                var action = [i,r];
-                actions.push(action);
+                actions.push(i);
             }
         }
 		return actions;
@@ -103,19 +102,19 @@ function CubeProblem(initialState){
 		var currentMatrix = state.getMatrix();
         var newState = state.clone();
         var newMatrix = newState.getMatrix();
-        var actionIdx = action[0];
-        var repeat = action[1];
+        var actionIdx = action;
+        // var repeat = action[1];
         
         var transformMatrix = facesMatrix[actionIdx];
-        for(var r =0;r<repeat;r++){
-            for(var i in transformMatrix){
-                var xformCell = transformMatrix[i];
-                var fromCell = xformCell[0];
-                var toCell = xformCell[1];
-                newMatrix[toCell[0]][toCell[1]][toCell[2]] =  currentMatrix[fromCell[0]][fromCell[1]][fromCell[2]];
-            }
-            currentMatrix = newState.clone().getMatrix();
+//        for(var r =0;r<repeat;r++){
+        for(var i in transformMatrix){
+            var xformCell = transformMatrix[i];
+            var fromCell = xformCell[0];
+            var toCell = xformCell[1];
+            newMatrix[toCell[0]][toCell[1]][toCell[2]] =  currentMatrix[fromCell[0]][fromCell[1]][fromCell[2]];
         }
+        currentMatrix = newState.clone().getMatrix();
+//        }
         return newState;
 	};
 	
@@ -480,4 +479,46 @@ function SearchNode(aState,aPlan){
     this.toString=function(){
         return planToString(this.plan);
     }
+}
+
+function Plan(actions){
+    var raw_actions=actions;
+    
+    
+    this.aggregated=function(){
+        var aggreated=[];
+        var lastAction = {action:null,repeat:0};
+        for(var i in raw_actions){
+            var action = raw_actions[i];
+            if(lastAction.action==action){
+                lastAction.repeat++;
+            }else{
+                lastAction = {action:action,repeat:1};
+                aggreated.push(lastAction);
+            }
+        }
+        return aggreated;
+    }
+
+    this.rawActions=function(){
+        return raw_actions;
+    }
+    
+    this.toString=function(){
+        var aggregated = this.aggregated();
+        var strOut = "";
+        for(i in aggregated){
+            strOut +=', '
+            var action = aggregated[i];
+            strOut += action.action;
+            if(action.repeat>1){
+                strOut+='x'+action.repeat;
+            }
+        }
+        if(strOut.length>1){
+            strOut=strOut.substr(2);
+        }
+        return "["+strOut+"]";
+    }
+    
 }
