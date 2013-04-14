@@ -140,7 +140,7 @@ function CubeState(state_matrix){
         var i = 0;
         var newFaces = []
         for(var f = 0;f<6;f++){
-            var rowlist = []
+            var rowlist = [];
             newFaces.push(rowlist)
         	for(var x=0;x<2;x++){
                 var collist = [];
