@@ -121,6 +121,22 @@ function CubeProblem(initialState){
     this.isGoal=function(state){
         return state.entropy()===0;
     };
+    
+    this.playActions=function(actionIndexes){
+        var state = this.getState();
+        var actions = this.getActions();
+        for(var idx in actionIndexes){
+            state = this.getSuccessorState(state,actions[actionIndexes[idx]]);
+        }
+        return state;
+    };
+
+    this.solve=function(){
+        var search = new Search();
+        var strategy = new BFStrategy();
+        var result = search.search(this,strategy);
+        return result;
+    };
 }
 
 function CubeState(state_matrix){
@@ -201,7 +217,8 @@ function CubeState(state_matrix){
         var newState = new CubeState(faces);
         return newState;
     };
-    
+
+
     this.entropy=function(face){
         if(typeof face !== "undefined"){
             var aFace = faces[face];

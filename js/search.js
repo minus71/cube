@@ -181,6 +181,8 @@ function Search(){
             this.onExpandNode(node);
         }
     }
+    
+    this.maxExpandNodes=50000;
 
     this.search= function(problem,strategy){
         var node = {state:problem.getState(),plan:[]};
@@ -201,8 +203,8 @@ function Search(){
             }else{
                 if(!closedSet.contains(state)){
                     expandedNodes++;
-                    if(expandedNodes>50000){
-                        return [[-1][0]];
+                    if(expandedNodes>this.maxExpandNodes){
+                        return ["too many nodes"];
                     }
                     this.fireExpandNode(node)
                     closedSet.add(state);
